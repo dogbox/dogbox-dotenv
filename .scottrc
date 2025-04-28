@@ -1,0 +1,26 @@
+
+export EDITOR="emacs -nw"
+
+alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
+
+# start ssh-agent
+[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+
+# macro
+alias m="cd ~/macro"
+alias venv="source ~/macro/venv/bin/activate"
+
+# run git pull on children repos
+alias multipull="find . -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} pull \;"
+
+alias dns-clear="sudo killall -HUP mDNSResponder"
+
+# include standard ML
+export PATH="$PATH:/usr/local/smlnj/bin"
+export PATH="$PATH:/opt/homebrew/bin"
+
+# Latex
+export PATH="$PATH:/Library/TeX/texbin"
+
+# reset audio bs
+alias audio-reset="sudo killall coreaudiod"

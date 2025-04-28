@@ -1,0 +1,113 @@
+(require 'server)
+(unless (server-running-p)
+    (server-start))
+
+(setq inhibit-startup-message t)
+(setq load-path (cons "~/.emacs.d/lisp" load-path))
+(setq custom-theme-load-path (cons "~/.emacs.d/lisp" custom-theme-load-path))
+
+(column-number-mode 1)
+
+; nano
+;;(setq load-path (cons "~/.emacs.d/nano-emacs" load-path))
+
+;; (when (display-graphic-p)
+;;   (require 'nano)
+;;   ;; don't use nano for inline editor (e.g. git)
+;;   (require 'tomorrow-night-theme)
+;;   )
+(require 'tomorrow-night-theme)
+(load-theme 'tomorrow-night t)
+
+;; make buffer names unique
+(require 'uniquify)
+
+;; line wrap
+(global-visual-line-mode 1)
+
+;; global variables
+(setq
+ inhibit-startup-screen t
+ create-lockfiles nil
+ make-backup-files nil
+ column-number-mode t
+ scroll-error-top-bottom t
+ show-paren-delay 0.5
+ use-package-always-ensure t
+ sentence-end-double-space nil)
+
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+
+(setq x-select-enable-clipboard t)
+
+(define-key global-map (kbd "RET") 'newline-and-indent)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; no backup
+(setq make-backup-files nil)
+
+;; custom shortcut overrides
+(global-set-key [(meta g)]    'goto-line)
+(global-set-key [(control h)] 'mark-whole-buffer)
+(global-set-key [(meta o)]    'find-file)
+(global-set-key [(meta s)]    'save-buffer)
+(global-set-key [(meta w)]    'write-file)
+(global-set-key [(control w)] 'kill-this-buffer)
+; (global-set-key [(meta q)]    'save-buffers-kill-emacs)
+(global-set-key [(meta r)]    'replace-string)
+;(global-set-key [(meta ,)]    'isearch-backward)
+(global-set-key [(meta .)]    'isearch-forward)
+(global-set-key [(meta c)]    'kill-ring-save)
+; (global-set-key [(meta x)]    'kill-region)
+(global-set-key [(meta v)]    'yank)
+(global-set-key [(meta z)]    'undo)
+
+(global-set-key [(meta /)] 'comment-dwim)
+
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Revert.html
+(global-auto-revert-mode 1)
+
+;; transparency
+(set-frame-parameter (selected-frame) 'alpha '(95 . 50))
+(add-to-list 'default-frame-alist '(alpha . (95 . 50)))
+
+;; ;; the package manager
+;; (require 'package)
+;; (setq
+;;  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+;;                     ("org" . "http://orgmode.org/elpa/")
+;;                     ("melpa" . "http://melpa.org/packages/")
+;;                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
+;;  package-archive-priorities '(("melpa-stable" . 1)))
+
+;; ; (package-initialize)
+;; (when (not package-archive-contents)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+;; (require 'use-package)
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(package-selected-packages '(use-package sml-mode scala-mode)))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("1157a4055504672be1df1232bed784ba575c60ab44d8e6c7b3800ae76b42f8bd" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
