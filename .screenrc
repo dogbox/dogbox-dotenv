@@ -1,0 +1,12 @@
+shell -${SHELL}
+startup_message off
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{-} %-Lw%{= gW}%n%f %t%{-}%+Lw %=%C%a %Y-%M-%d"
+escape `~
+
+# support native terminal scrolling
+defscrollback 5000
+# termcapinfo xterm ti@:te@
+# termcapinfo xterm-color ti@:te@
+termcapinfo xterm* ti@:te@
