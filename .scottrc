@@ -1,5 +1,4 @@
-
-export EDITOR="emacs -nw"
+export EDITOR=emacs
 
 alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
 
