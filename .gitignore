@@ -1,0 +1,17 @@
+# Emacs transient state — session recovery files, backups, autosaves.
+# Regenerated on every run; nothing here belongs on a new machine.
+.emacs.d/auto-save-list/
+.emacs.d/eln-cache/
+.emacs.d/transient/
+.emacs.d/.cache/
+.emacs.d/places
+.emacs.d/recentf
+*~
+\#*\#
+.\#*
+
+# macOS
+.DS_Store
+# Custom folder icons: the file is literally "Icon" + a carriage return.
+Icon?
+._*
