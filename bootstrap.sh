@@ -2,11 +2,12 @@
 #
 # bootstrap.sh — set up a new computer from this dotfiles repo.
 #
-#   1. installs oh-my-zsh (skipped if already present)
-#   2. copies the tracked dotfiles into $HOME, backing up anything it replaces
+# Copies the tracked dotfiles into $HOME, backing up anything it replaces.
+# oh-my-zsh comes along with them: .oh-my-zsh is vendored in this repo, so
+# there's no separate installer step.
 #
 # Usage:
-#   ./bootstrap.sh              # install + copy
+#   ./bootstrap.sh              # copy the dotfiles into $HOME
 #   ./bootstrap.sh --dry-run    # print what would happen, change nothing
 #   ./bootstrap.sh --force      # replace existing files without prompting
 #
@@ -29,7 +30,8 @@ DRY_RUN=0
 FORCE=0
 
 usage() {
-  sed -n '2,12p' "${BASH_SOURCE[0]}" | sed 's/^#\{1,2\} \{0,1\}//'
+  # The header comment block, minus the shebang, is the help text.
+  awk 'NR > 1 { if ($0 !~ /^#/) exit; sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"
 }
 
 log()  { printf '\033[0;34m==>\033[0m %s\n' "$*"; }
@@ -42,30 +44,6 @@ run() {
   else
     "$@"
   fi
-}
-
-install_oh_my_zsh() {
-  if [[ -d "${TARGET}/.oh-my-zsh" ]]; then
-    log "oh-my-zsh already installed at ${TARGET}/.oh-my-zsh, skipping"
-    return
-  fi
-
-  command -v curl >/dev/null 2>&1 || die "curl is required to install oh-my-zsh"
-
-  log "installing oh-my-zsh"
-  # --unattended: don't run zsh or change the login shell
-  # --keep-zshrc: don't clobber .zshrc; we install our own below
-  if [[ "${DRY_RUN}" -eq 1 ]]; then
-    printf '    [dry-run] curl ohmyzsh install.sh | sh -s -- --unattended --keep-zshrc\n'
-    return
-  fi
-
-  local installer
-  installer="$(mktemp)"
-  # shellcheck disable=SC2064
-  trap "rm -f '${installer}'" RETURN
-  curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o "${installer}"
-  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh "${installer}" --unattended --keep-zshrc
 }
 
 backup() {
@@ -101,8 +79,9 @@ install_dotfiles() {
 
     log "installing ${name} -> ${dest}"
     if [[ -d "${src}" ]]; then
-      # Merge into the destination (matters for .oh-my-zsh, which the
-      # installer above may have just created).
+      # Merge into the destination rather than replacing it, so anything
+      # already there that we don't track (custom themes, elpa packages)
+      # survives.
       run mkdir -p "${dest}"
       run cp -R "${src}/." "${dest}/"
     else
@@ -127,7 +106,6 @@ main() {
   log "dotfiles source: ${DOTFILES_DIR}"
   log "install target:  ${TARGET}"
 
-  install_oh_my_zsh
   install_dotfiles
 
   log "done. start a new shell (or run 'exec zsh') to pick up the changes."
